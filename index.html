@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#c6a4f9">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Desta Nail's Collection</title>
+<style>
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #f8c6e3, #c6a4f9);
+  color: #2e004f;
+  overflow-x: hidden;
+}
+
+/* === PARALLAX HEADER === */
+.parallax {
+  background-image: url('https://bdudnutyshaqxhorsgdk.supabase.co/storage/v1/object/public/upload/1760540050312_1000100009.png');
+  min-height: 300px;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
+
+header h1 {
+  font-size: 2.3em;
+  letter-spacing: 2px;
+  margin: 0;
+  font-family: 'Playfair Display', serif;
+}
+header p {
+  font-size: 1em;
+  margin-top: 8px;
+}
+
+/* === CART ICON === */
+.cart-icon {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  font-size: 32px;
+  cursor: pointer;
+  background: rgba(255,255,255,0.25);
+  backdrop-filter: blur(5px);
+  border-radius: 50%;
+  padding: 10px;
+  z-index: 100;
+  transition: transform 0.3s ease;
+}
+.cart-icon:hover {
+  transform: scale(1.1);
+}
+.badge {
+  position: fixed;
+  top: 15px;
+  right: 15px;
+  background-color: #ff3366;
+  color: white;
+  border-radius: 50%;
+  padding: 4px 8px;
+  font-size: 12px;
+  z-index: 101;
+}
+
+/* === PRODUK GRID === */
+.products {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 25px;
+  padding: 50px 20px;
+  max-width: 1000px;
+  margin: auto;
+}
+
+.card {
+  background: linear-gradient(145deg, #f9d6eb, #e1b6f0);
+  border-radius: 25px;
+  text-align: center;
+  padding: 20px;
+  overflow: hidden;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+  position: relative;
+}
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 50%;
+  height: 100%;
+  background: rgba(255,255,255,0.4);
+  transform: skewX(-20deg);
+  animation: shimmer 2.5s infinite;
+}
+@keyframes shimmer {
+  0% { left: -150%; }
+  100% { left: 150%; }
+}
+.card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.card img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+.card img:hover {
+  transform: scale(1.05);
+}
+.card h3 {
+  margin: 15px 0 5px;
+  font-family: 'Playfair Display', serif;
+}
+.card p {
+  font-size: 1.1em;
+  color: #3a004f;
+}
+
+/* === TOMBOL KUANTITAS === */
+.qty-control {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0;
+}
+.qty-control button {
+  background: #ff66b2;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  font-size: 18px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.qty-control span {
+  margin: 0 10px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+button {
+  background: #ff3399;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+button:hover {
+  background: #ff66b2;
+}
+
+/* === MODALS === */
+.modal, .preview-modal {
+  display: none;
+  position: fixed;
+  z-index: 10;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0,0,0,0.6);
+  justify-content: center;
+  align-items: center;
+}
+
+/* Preview Modal */
+.preview-content {
+  background: #fff;
+  color: #333;
+  padding: 15px;
+  border-radius: 15px;
+  width: 90%;
+  max-width: 450px;
+  text-align: center;
+  position: relative;
+  animation: fadeIn 0.3s ease;
+}
+.preview-content img {
+  width: 100%;
+  border-radius: 12px;
+}
+.preview-close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 1.5em;
+  color: #333;
+  cursor: pointer;
+}
+
+/* Checkout Modal */
+.modal-content {
+  background: linear-gradient(135deg, #f9c5ec, #b084f7);
+  padding: 25px;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 400px;
+  color: #2b003b;
+}
+
+.modal-content h2 {
+  text-align: center;
+  color: #fff;
+}
+.modal-content input, .modal-content textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+}
+.modal-content button {
+  width: 100%;
+  margin-top: 15px;
+}
+
+/* FOOTER */
+footer {
+  text-align: center;
+  padding: 15px;
+  font-size: 0.9em;
+  color: white;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+  background: linear-gradient(135deg, #c38cf5, #f7a6d6);
+}
+</style>
+</head>
+<body>
+
+<header class="parallax">
+  <h1>Desta Nail's Collection</h1>
+  <p>Koleksi Kuku Palsu Wanita Elegan & Modern 💅</p>
+</header>
+
+<div class="cart-icon" id="cartIcon">🛍️</div>
+<span class="badge" id="cartCount">0</span>
+
+<section class="products" id="productList"></section>
+
+<!-- Modal Preview -->
+<div class="preview-modal" id="previewModal">
+  <div class="preview-content">
+    <span class="preview-close" onclick="closePreview()">&times;</span>
+    <img id="previewImg" src="" alt="">
+    <h3 id="previewName"></h3>
+    <p id="previewPrice"></p>
+    <div class="qty-control">
+      <button onclick="changeQty(-1)">−</button>
+      <span id="previewQty">1</span>
+      <button onclick="changeQty(1)">+</button>
+    </div>
+    <button onclick="addFromPreview()">Tambah ke Keranjang</button>
+  </div>
+</div>
+
+<!-- Modal Checkout -->
+<div class="modal" id="checkoutModal">
+  <div class="modal-content">
+    <h2>Checkout</h2>
+    <div id="orderDetails"></div>
+    <input type="text" id="nama" placeholder="Nama Lengkap">
+    <textarea id="alamat" placeholder="Alamat Lengkap"></textarea>
+    <input type="tel" id="nohp" placeholder="No. HP">
+    <button onclick="kirimWhatsApp()">Kirim via WhatsApp</button>
+    <button style="background:#666;" onclick="tutupModal()">Tutup</button>
+  </div>
+</div>
+
+<footer>© 2025 Desta Nail's Collection — Elegan & Stylish 💅</footer>
+
+<script>
+const products = [
+  {name: "Kuku Palsu Pink Glam", price: 25000, img: "https://bdudnutyshaqxhorsgdk.supabase.co/storage/v1/object/public/upload/1760485064857_1000099673.jpg"},
+  {name: "Kuku Palsu Nude Elegan", price: 30000, img: "https://bdudnutyshaqxhorsgdk.supabase.co/storage/v1/object/public/upload/1760485260890_1000099678.jpg"},
+  {name: "Kuku Palsu Glitter Queen", price: 35000, img: "https://bdudnutyshaqxhorsgdk.supabase.co/storage/v1/object/public/upload/1760487123073_1000099686.jpg"},
+  {name: "Kuku Palsu French Tip", price: 28000, img: "https://bdudnutyshaqxhorsgdk.supabase.co/storage/v1/object/public/upload/1760487245440_1000099687.jpg"},
+];
+let cart = [];
+let previewIndex = null;
+let qtyPreview = 1;
+
+function tampilProduk() {
+  document.getElementById("productList").innerHTML = products.map((p, i) => `
+    <div class="card">
+      <img src="${p.img}" alt="${p.name}" onclick="showPreview(${i})">
+      <h3>${p.name}</h3>
+      <p>Rp${p.price.toLocaleString()}</p>
+    </div>
+  `).join("");
+}
+
+function showPreview(i) {
+  previewIndex = i;
+  qtyPreview = 1;
+  const p = products[i];
+  document.getElementById("previewImg").src = p.img;
+  document.getElementById("previewName").textContent = p.name;
+  document.getElementById("previewPrice").textContent = `Rp${p.price.toLocaleString()}`;
+  document.getElementById("previewQty").textContent = qtyPreview;
+  document.getElementById("previewModal").style.display = "flex";
+}
+function closePreview() {
+  document.getElementById("previewModal").style.display = "none";
+}
+function changeQty(n) {
+  qtyPreview = Math.max(1, qtyPreview + n);
+  document.getElementById("previewQty").textContent = qtyPreview;
+}
+function addFromPreview() {
+  const product = products[previewIndex];
+  const existing = cart.find(item => item.name === product.name);
+  if (existing) existing.qty += qtyPreview;
+  else cart.push({...product, qty: qtyPreview});
+  document.getElementById("cartCount").textContent = cart.reduce((a,b)=>a+b.qty,0);
+  closePreview();
+}
+
+const modal = document.getElementById("checkoutModal");
+document.getElementById("cartIcon").onclick = () => {
+  if (cart.length === 0) return alert("Keranjang masih kosong!");
+  let detail = "";
+  let total = 0;
+  cart.forEach(item => {
+    detail += `${item.name} x${item.qty} - Rp${(item.price*item.qty).toLocaleString()}<br>`;
+    total += item.price*item.qty;
+  });
+  detail += `<br><strong>Total: Rp${total.toLocaleString()}</strong>`;
+  document.getElementById("orderDetails").innerHTML = detail;
+  modal.style.display = "flex";
+};
+function tutupModal(){ modal.style.display = "none"; }
+
+function kirimWhatsApp() {
+  const nama = document.getElementById("nama").value;
+  const alamat = document.getElementById("alamat").value;
+  const nohp = document.getElementById("nohp").value;
+  let pesan = `Halo, saya ingin pesan:\n\n`;
+  cart.forEach(item => pesan += `- ${item.name} x${item.qty} (Rp${(item.price*item.qty).toLocaleString()})\n`);
+  const total = cart.reduce((a,b)=>a+b.price*b.qty,0);
+  pesan += `\nTotal: Rp${total.toLocaleString()}\n\nNama: ${nama}\nAlamat: ${alamat}\nNo HP: ${nohp}`;
+  window.open(`https://wa.me/6281234567890?text=${encodeURIComponent(pesan)}`, '_blank');
+}
+tampilProduk();
+</script>
+  <script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js")
+      .then(reg => console.log("Service Worker terdaftar ✅"))
+      .catch(err => console.log("SW gagal:", err));
+  });
+}
+</script>
+</body>
+</html>
