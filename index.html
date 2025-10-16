@@ -353,7 +353,7 @@ function kirimWhatsApp() {
   cart.forEach(item => pesan += `- ${item.name} x${item.qty} (Rp${(item.price*item.qty).toLocaleString()})\n`);
   const total = cart.reduce((a,b)=>a+b.price*b.qty,0);
   pesan += `\nTotal: Rp${total.toLocaleString()}\n\nNama: ${nama}\nAlamat: ${alamat}\nNo HP: ${nohp}`;
-  window.open(`https://wa.me/6285774771996?text=${encodeURIComponent(pesan)}`, '_blank');
+  window.open(`https://wa.me/+6285774771996?text=${encodeURIComponent(pesan)}`, '_blank');
 }
 tampilProduk();
 </script>
