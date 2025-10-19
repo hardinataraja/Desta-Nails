@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cek Status Pesanan - Desta Nail's Collection</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #1a001f, #3a0066);
+      color: #fff;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+    header {
+      padding: 25px;
+      background: linear-gradient(135deg, #6a00ff, #c800b3);
+      box-shadow: 0 3px 10px rgba(0,0,0,0.3);
+    }
+    header h1 {
+      margin: 0;
+      font-family: 'Playfair Display', serif;
+    }
+    .container {
+      margin: 40px auto;
+      max-width: 500px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 0 15px rgba(255,255,255,0.08);
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.1);
+      color: white;
+      font-size: 16px;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+    input::placeholder { color: #ccc; }
+    button {
+      background: #ff33aa;
+      color: white;
+      border: none;
+      border-radius: 25px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background: #ff66c8;
+    }
+    .result {
+      margin-top: 25px;
+      text-align: left;
+      line-height: 1.6em;
+      font-size: 15px;
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 10px;
+      font-weight: bold;
+      font-size: 13px;
+    }
+    .paid { background: #2ecc71; }
+    .pending { background: #f1c40f; }
+    .baru { background: #9b59b6; }
+    .diproses { background: #3498db; }
+    .selesai { background: #27ae60; }
+    footer {
+      margin-top: 40px;
+      padding: 15px;
+      background: rgba(255,255,255,0.05);
+      font-size: 0.9em;
+      color: #ccc;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Cek Status Pesanan 💅</h1>
+  <p>Desta Nail's Collection</p>
+</header>
+
+<div class="container">
+  <input type="text" id="searchValue" placeholder="Masukkan kode pesanan atau no HP">
+  <button onclick="cekStatus()">Lihat Status</button>
+
+  <div class="result" id="resultBox"></div>
+</div>
+
+<footer>© 2025 Desta Nail's Collection — Elegan & Stylish 💜</footer>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCo7mrvNqksgyOrHwiRU5pW0k38fQeLR4U",
+  authDomain: "desta-nails.firebaseapp.com",
+  projectId: "desta-nails",
+  storageBucket: "desta-nails.firebasestorage.app",
+  messagingSenderId: "539165179095",
+  appId: "1:539165179095:web:6cb77efd6cec10f9d08492",
+  measurementId: "G-4SRZSM2KD7"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+window.cekStatus = async ()=>{
+  const val = document.getElementById("searchValue").value.trim();
+  const resultBox = document.getElementById("resultBox");
+  resultBox.innerHTML = "<p>Mencari data...</p>";
+  if(!val){ resultBox.innerHTML="<p>Masukkan kode pesanan atau no HP!</p>"; return; }
+
+  const q1 = query(collection(db,"orders"), where("kode","==",val));
+  const q2 = query(collection(db,"orders"), where("nohp","==",val));
+  const [snap1, snap2] = await Promise.all([getDocs(q1), getDocs(q2)]);
+  const docs = [...snap1.docs, ...snap2.docs];
+  if(docs.length === 0){ resultBox.innerHTML = "<p>Tidak ditemukan pesanan dengan data tersebut.</p>"; return; }
+
+  const o = docs[0].data();
+  const total = o.items.reduce((a,b)=>a+b.price*b.qty,0);
+  const produkList = o.items.map(i=>`• ${i.name} x${i.qty} (Rp${(i.price*i.qty).toLocaleString()})`).join("<br>");
+  
+  resultBox.innerHTML = `
+    <h3>Kode Pesanan: ${o.kode}</h3>
+    <p><strong>Nama:</strong> ${o.nama}<br>
+    <strong>Alamat:</strong> ${o.alamat}<br>
+    <strong>No HP:</strong> ${o.nohp}</p>
+    <p><strong>Produk:</strong><br>${produkList}</p>
+    <p><strong>Total:</strong> Rp${total.toLocaleString()}</p>
+    <p><strong>Pembayaran:</strong> ${o.payment_method} <span class="badge ${o.payment_status}">${o.payment_status.toUpperCase()}</span></p>
+    <p><strong>Status Pesanan:</strong> <span class="badge ${o.status}">${o.status.toUpperCase()}</span></p>
+  `;
+};
+</script>
+
+</body>
+</html>
