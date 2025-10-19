@@ -5,485 +5,113 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Desta Nail's Collection</title>
   <meta name="theme-color" content="#c38cf5">
+
+  <!-- Font dan Style -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg-start:#f8c6e3;
-      --bg-end:#c6a4f9;
-      --accent-start:#6a00ff;
-      --accent-end:#c800b3;
-      --glass:rgba(255,255,255,0.9);
-    }
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{
-      font-family:'Poppins',sans-serif;
-      background:linear-gradient(135deg,var(--bg-start),var(--bg-end));
-      color:#2e004f;
-    }
+  <link rel="stylesheet" href="style.css">
 
-    /* HEADER */
-    header.parallax{
-      background:url('https://bdudnutyshaqxhorsgdk.supabase.co/storage/v1/object/public/upload/1760540050312_1000100009.png') center/cover fixed;
-      min-height:300px;
-      display:flex;flex-direction:column;align-items:center;justify-content:center;
-      color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.5);
-    }
-    header h1{font-family:'Playfair Display',serif;font-size:2.3rem;letter-spacing:1px}
-    header p{margin-top:8px;font-size:1rem}
-
-    /* CART */
-    .cart-icon{
-      position:fixed;top:18px;right:18px;
-      background:rgba(255,255,255,0.25);backdrop-filter:blur(5px);
-      border-radius:50%;padding:10px;font-size:26px;cursor:pointer;z-index:200;
-    }
-    .badge{
-      position:fixed;top:14px;right:14px;
-      background:#ff3399;color:#fff;border-radius:50%;padding:3px 7px;font-size:12px;z-index:201;
-    }
-.status-icon {
-  position: fixed;
-  top: 18px;
-  right: 70px;
-  background: rgba(255,255,255,0.25);
-  backdrop-filter: blur(5px);
-  border-radius: 50%;
-  padding: 10px;
-  font-size: 26px;
-  cursor: pointer;
-  z-index: 200;
-  transition: transform 0.3s ease;
-}
-.status-icon:hover { transform: scale(1.1); }
-    /* PRODUK GRID */
-    .products{
-      display:grid;
-      grid-template-columns:repeat(2,1fr);
-      gap:25px;
-      padding:50px 20px;
-      max-width:1000px;
-      margin:auto;
-    }
-    .card{
-      background:linear-gradient(145deg,#f9d6eb,#e1b6f0);
-      border-radius:25px;
-      text-align:center;
-      padding:20px;
-      overflow:hidden;
-      position:relative;
-      box-shadow:0 6px 18px rgba(0,0,0,0.1);
-      transition:transform .3s,box-shadow .3s;
-    }
-    .card:hover{transform:translateY(-6px);box-shadow:0 10px 25px rgba(0,0,0,0.2)}
-    .card::before{
-      content:"";
-      position:absolute;inset:0;
-      background:linear-gradient(120deg,rgba(255,255,255,0) 0%,rgba(255,255,255,0.8) 40%,rgba(255,255,255,0.2) 60%,rgba(255,255,255,0) 100%);
-      transform:translateX(-100%);
-      animation:shimmer 3s infinite linear;
-      opacity:.5;mix-blend-mode:overlay;
-    }
-    @keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
-    .card img{width:100%;height:250px;object-fit:cover;border-radius:15px;transition:transform .3s;cursor:pointer}
-    .card img:hover{transform:scale(1.05)}
-    .card h3{margin:15px 0 5px;font-family:'Playfair Display',serif}
-    .card p{font-size:1.05em}
-
-    @media(max-width:480px){
-      .products{grid-template-columns:repeat(2,1fr);gap:15px;padding:25px 10px}
-      .card img{height:220px}
-    }
-
-/* === MODAL PREVIEW PRODUK (fix ukuran & tema elegan) === */
-.preview-modal {
-  display: none;
-  position: fixed;
-  inset: 0;
-  z-index: 220;
-  background: rgba(0,0,0,0.6);
-  backdrop-filter: blur(4px);
-  align-items: center;
-  justify-content: center;
-}
-/* === FIX: Dasar semua modal agar tidak muncul di halaman === */
-.modal,
-.payment-modal,
-.thankyou-modal {
-  display: none;              /* disembunyikan default */
-  position: fixed;
-  inset: 0;                   /* full screen */
-  background: rgba(0,0,0,0.6);
-  backdrop-filter: blur(4px);
-  z-index: 250;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Biar animasinya halus */
-.modal-content,
-.payment-content,
-.thankyou-content {
-  border-radius: 18px;
-  padding: 20px;
-  max-width: 480px;
-  width: 90%;
-  animation: fadeUp 0.3s ease;
-}
-.preview-content {
-  position: relative;
-  background: linear-gradient(145deg, #f9d6eb, #d3b1ff);
-  border-radius: 20px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-  padding: 20px;
-  text-align: center;
-  width: 90%;
-  max-width: 420px; /* fix utama agar tidak terlalu besar */
-  animation: fadeUp 0.3s ease;
-}
-
-.preview-content img {
-  width: 100%;
-  max-height: 280px;
-  object-fit: cover;
-  border-radius: 14px;
-  box-shadow: 0 5px 12px rgba(0,0,0,0.2);
-}
-
-.preview-content h3 {
-  margin: 12px 0 6px;
-  font-size: 1.1rem;
-  color: #3a004f;
-  font-family: 'Playfair Display', serif;
-}
-
-.preview-content p {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #4c0068;
-}
-
-.preview-close {
-  position: absolute;
-  top: 12px;
-  right: 14px;
-  font-size: 22px;
-  cursor: pointer;
-  color: #fff;
-  background: rgba(0,0,0,0.5);
-  border-radius: 50%;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: 0.2s;
-}
-.preview-close:hover {
-  background: rgba(0,0,0,0.7);
-}
-
-@keyframes fadeUp {
-  from { transform: translateY(40px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-
-/* Tombol di modal preview */
-.preview-content button {
-  background: linear-gradient(90deg, var(--accent-start), var(--accent-end));
-  color: white;
-  border: none;
-  border-radius: 12px;
-  padding: 10px 18px;
-  margin-top: 10px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.25s;
-}
-.preview-content button:hover {
-  transform: scale(1.05);
-}
-    /* CHECKOUT */
-    .modal-content{background:linear-gradient(135deg,#f9c5ec,#b084f7);color:#2b003b}
-    .modal-content h2{color:#fff}
-    .modal-content input,.modal-content textarea{
-      width:100%;margin-top:10px;padding:10px;border:none;border-radius:10px;
-    }
-    .btn{border:none;border-radius:20px;padding:10px 18px;font-weight:600;cursor:pointer}
-    .btn-primary{background:linear-gradient(90deg,#6a00ff,#c800b3);color:#fff}
-    .btn-ghost{background:#555;color:#fff}
-    .modal-actions{margin-top:12px;display:flex;justify-content:end;gap:10px;flex-wrap:wrap}
-
-    /* PAYMENT */
-    .payment-content{
-      background:linear-gradient(135deg,#6a00ff,#ff66b2);
-      color:#fff;box-shadow:0 10px 35px rgba(107,0,133,.25);
-    }
-    .pay-row{margin-top:12px;text-align:left;background:rgba(255,255,255,.1);padding:10px;border-radius:10px}
-    .pay-label{font-weight:600;opacity:.9}
-    .pay-value{font-weight:700}
-    .bank-box{background:rgba(255,255,255,.15);padding:10px;border-radius:10px;display:flex;justify-content:space-between;align-items:center}
-    .copy-btn{background:#fff;color:#2b003b;border:none;padding:6px 10px;border-radius:8px;cursor:pointer;font-weight:700}
-    .qris-img{display:block;margin:10px auto;max-width:240px;border-radius:10px;background:#fff;padding:8px}
-    .muted{color:rgba(255,255,255,.85);font-size:.9rem}
-
-    /* THANK YOU MODAL */
-    .thankyou-content{
-      background:linear-gradient(135deg,#b084f7,#f9c5ec);
-      color:#2b003b;box-shadow:0 10px 25px rgba(0,0,0,.2);
-    }
-    .thankyou-content h2{color:#fff;margin-bottom:8px}
-    .order-code-box{margin:12px auto;padding:12px;background:#fff;border-radius:12px;display:flex;justify-content:center;align-items:center;gap:10px;font-weight:700}
-    .order-code-box span{color:#2b003b}
-    .copy-mini{background:#ff66b2;color:#fff;border:none;padding:6px 8px;border-radius:8px;cursor:pointer}
-
-    footer{
-      margin-top:40px;padding:16px;text-align:center;color:white;
-      background:linear-gradient(135deg,var(--accent-start),var(--accent-end));
-    }
-  </style>
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 <body>
 
-<header class="parallax">
-  <h1>Desta Nail's Collection</h1>
-  <p>Koleksi Kuku Palsu Wanita Elegan & Modern 💅</p>
-</header>
+  <header class="parallax">
+    <h1>Desta Nail's Collection</h1>
+    <p>Koleksi Kuku Palsu Wanita Elegan & Modern 💅</p>
+  </header>
 
-<div class="cart-icon" id="cartIcon">🛍️</div>
- <div class="status-icon" id="statusIcon">📦</div>
-<span class="badge" id="cartCount">0</span>
-  
+  <div class="cart-icon" id="cartIcon">🛍️</div>
+  <div class="status-icon" id="statusIcon">📦</div>
+  <span class="badge" id="cartCount">0</span>
 
-<section class="products" id="productList"></section>
+  <section class="products" id="productList"></section>
 
-<!-- Preview Modal -->
-<div class="preview-modal" id="previewModal">
-  <div class="preview-content">
-    <span style="position:absolute;right:15px;top:10px;cursor:pointer" onclick="closePreview()">×</span>
-    <img id="previewImg" src="" alt="">
-    <h3 id="previewName"></h3>
-    <p id="previewPrice"></p>
-    <div style="margin-top:10px;display:flex;justify-content:center;gap:10px">
-      <button onclick="changeQty(-1)">−</button><span id="previewQty">1</span><button onclick="changeQty(1)">+</button>
-    </div>
-    <div style="margin-top:12px">
-      <button class="btn btn-primary" onclick="addFromPreview()">Tambah ke Keranjang</button>
-    </div>
-  </div>
-</div>
-
-<!-- Checkout Modal -->
-<div class="modal" id="checkoutModal">
-  <div class="modal-content">
-    <h2>Checkout</h2>
-    <div id="orderDetails" style="background:var(--glass);padding:10px;border-radius:10px"></div>
-    <input type="text" id="nama" placeholder="Nama Lengkap">
-    <textarea id="alamat" placeholder="Alamat Lengkap" rows="2"></textarea>
-    <input type="tel" id="nohp" placeholder="No. WhatsApp (628...)">
-    <div class="modal-actions">
-      <button class="btn btn-ghost" onclick="closeCheckout()">Tutup</button>
-      <button class="btn btn-primary" onclick="bayarSekarang()">Bayar Sekarang</button>
+  <!-- Preview Modal -->
+  <div class="preview-modal" id="previewModal">
+    <div class="preview-content">
+      <span class="preview-close" onclick="closePreview()">×</span>
+      <img id="previewImg" src="" alt="">
+      <h3 id="previewName"></h3>
+      <p id="previewPrice"></p>
+      <div style="margin-top:10px;display:flex;justify-content:center;gap:10px">
+        <button onclick="changeQty(-1)">−</button><span id="previewQty">1</span><button onclick="changeQty(1)">+</button>
+      </div>
+      <div style="margin-top:12px">
+        <button class="btn btn-primary" onclick="addFromPreview()">Tambah ke Keranjang</button>
+      </div>
     </div>
   </div>
-</div>
 
-<!-- Payment Modal -->
-<div class="payment-modal" id="paymentModal">
-  <div class="payment-content">
-    <h2>Payment Request</h2>
-    <div class="pay-row"><div class="pay-label">Biaya dasar</div><div class="pay-value" id="payBase">Rp0</div></div>
-    <div class="pay-row"><div class="pay-label">Kode unik</div><div class="pay-value" id="payKode">000</div></div>
-    <div class="pay-row"><div class="pay-label">Total dibayar</div><div class="pay-value" id="payTotal">Rp0</div></div>
-
-    <div class="pay-row">
-      <div class="pay-label">Metode Pembayaran</div>
-      <select id="paymentMethod2" style="width:100%;padding:8px;border:none;border-radius:10px;font-weight:600">
-        <option value="">Pilih Metode</option>
-        <option>Transfer BCA</option>
-        <option>Transfer BRI</option>
-        <option>DANA</option>
-        <option>OVO</option>
-        <option>QRIS</option>
-        <option>COD</option>
-      </select>
-    </div>
-
-    <div id="paymentDetailsArea" style="margin-top:10px"></div>
-    <div style="margin-top:14px;text-align:right;display:flex;justify-content:end;gap:10px;flex-wrap:wrap">
-      <button class="btn btn-ghost" onclick="batalPayment()">Batal</button>
-      <button class="btn btn-primary" onclick="konfirmasiSudahBayar()">Saya Sudah Bayar</button>
+  <!-- Checkout Modal -->
+  <div class="modal" id="checkoutModal">
+    <div class="modal-content">
+      <h2>Checkout</h2>
+      <div id="orderDetails" style="background:var(--glass);padding:10px;border-radius:10px"></div>
+      <input type="text" id="nama" placeholder="Nama Lengkap">
+      <textarea id="alamat" placeholder="Alamat Lengkap" rows="2"></textarea>
+      <input type="tel" id="nohp" placeholder="No. WhatsApp (628...)">
+      <div class="modal-actions">
+        <button class="btn btn-ghost" onclick="closeCheckout()">Tutup</button>
+        <button class="btn btn-primary" onclick="bayarSekarang()">Bayar Sekarang</button>
+      </div>
     </div>
   </div>
-</div>
 
-<!-- Thank You Modal -->
-<div class="thankyou-modal" id="thankyouModal">
-  <div class="thankyou-content">
-    <h2>Terima Kasih!</h2>
-    <p>Pesanan Anda sedang diproses.<br>Gunakan kode berikut untuk cek status:</p>
-    <div class="order-code-box">
-      <span id="orderCodeText">DS-XXXXXX</span>
-      <button class="copy-mini" onclick="copyOrderCode()">📋</button>
+  <!-- Payment Modal -->
+  <div class="payment-modal" id="paymentModal">
+    <div class="payment-content">
+      <h2>Payment Request</h2>
+      <div class="pay-row"><div class="pay-label">Biaya dasar</div><div class="pay-value" id="payBase">Rp0</div></div>
+      <div class="pay-row"><div class="pay-label">Kode unik</div><div class="pay-value" id="payKode">000</div></div>
+      <div class="pay-row"><div class="pay-label">Total dibayar</div><div class="pay-value" id="payTotal">Rp0</div></div>
+
+      <div class="pay-row">
+        <div class="pay-label">Metode Pembayaran</div>
+        <select id="paymentMethod2" style="width:100%;padding:8px;border:none;border-radius:10px;font-weight:600">
+          <option value="">Pilih Metode</option>
+          <option>Transfer BCA</option>
+          <option>Transfer BRI</option>
+          <option>DANA</option>
+          <option>OVO</option>
+          <option>QRIS</option>
+          <option>COD</option>
+        </select>
+      </div>
+
+      <div id="paymentDetailsArea" style="margin-top:10px"></div>
+      <div style="margin-top:14px;text-align:right;display:flex;justify-content:end;gap:10px;flex-wrap:wrap">
+        <button class="btn btn-ghost" onclick="batalPayment()">Batal</button>
+        <button class="btn btn-primary" onclick="konfirmasiSudahBayar()">Saya Sudah Bayar</button>
+      </div>
     </div>
-    <button class="btn btn-primary" onclick="lihatStatus()">Lihat Status Pesanan</button>
   </div>
-</div>
 
-<footer>© 2025 Desta Nail's Collection — Elegan & Stylish 💅</footer>
+  <!-- Thank You Modal -->
+  <div class="thankyou-modal" id="thankyouModal">
+    <div class="thankyou-content">
+      <h2>Terima Kasih!</h2>
+      <p>Pesanan Anda sedang diproses.<br>Gunakan kode berikut untuk cek status:</p>
+      <div class="order-code-box">
+        <span id="orderCodeText">DS-XXXXXX</span>
+        <button class="copy-mini" onclick="copyOrderCode()">📋</button>
+      </div>
+      <button class="btn btn-primary" onclick="lihatStatus()">Lihat Status Pesanan</button>
+    </div>
+  </div>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, collection, onSnapshot, addDoc, updateDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  <footer>© 2025 Desta Nail's Collection — Elegan & Stylish 💅</footer>
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCo7mrvNqksgyOrHwiRU5pW0k38fQeLR4U",
-  authDomain: "desta-nails.firebaseapp.com",
-  projectId: "desta-nails",
-  storageBucket: "desta-nails.appspot.com", // ✅ fixed
-  messagingSenderId: "539165179095",
-  appId: "1:539165179095:web:6cb77efd6cec10f9d08492",
-  measurementId: "G-4SRZSM2KD7"
-};
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+  <script type="module" src="script.js"></script>
 
-const productList=document.getElementById('productList');
-const previewModal=document.getElementById('previewModal');
-const checkoutModal=document.getElementById('checkoutModal');
-const paymentModal=document.getElementById('paymentModal');
-const thankyouModal=document.getElementById('thankyouModal');
-const cartIcon=document.getElementById('cartIcon');
-const cartCount=document.getElementById('cartCount');
-
-let products=[],cart=[],previewIndex=null,qtyPreview=1,currentOrderId=null,currentOrderObj=null;
-
-onSnapshot(collection(db,'products'),snap=>{
-  products=snap.docs.map(d=>({id:d.id,...d.data()}));
-  productList.innerHTML=products.map((p,i)=>`
-    <div class="card"><img src="${p.img}" alt="${p.name}" onclick="showPreview(${i})"><h3>${p.name}</h3><p>Rp${Number(p.price).toLocaleString('id-ID')}</p></div>`).join('');
-});
-
-window.showPreview=i=>{
-  previewIndex=i;qtyPreview=1;
-  const p=products[i];
-  document.getElementById('previewImg').src=p.img;
-  document.getElementById('previewName').textContent=p.name;
-  document.getElementById('previewPrice').textContent=`Rp${p.price.toLocaleString('id-ID')}`;
-  document.getElementById('previewQty').textContent=qtyPreview;
-  previewModal.style.display='flex';
-};
-window.closePreview=()=>previewModal.style.display='none';
-window.changeQty=n=>{qtyPreview=Math.max(1,qtyPreview+n);document.getElementById('previewQty').textContent=qtyPreview};
-window.addFromPreview=()=>{
-  const p=products[previewIndex];
-  const ex=cart.find(x=>x.id===p.id);
-  ex?ex.qty+=qtyPreview:cart.push({...p,qty:qtyPreview});
-  cartCount.textContent=cart.reduce((a,b)=>a+b.qty,0);
-  closePreview();
-};
-
-cartIcon.addEventListener('click',()=>{
-  if(!cart.length)return alert('Keranjang kosong!');
-  let html='',total=0;
-  cart.forEach(i=>{html+=`${i.name} x${i.qty} - Rp${(i.price*i.qty).toLocaleString('id-ID')}<br>`;total+=i.price*i.qty});
-  html+=`<br><strong>Total: Rp${total.toLocaleString('id-ID')}</strong>`;
-  document.getElementById('orderDetails').innerHTML=html;
-  checkoutModal.style.display='flex';
-});
-window.closeCheckout=()=>checkoutModal.style.display='none';
-
-function genKodeUnik(){const k=Math.floor(Math.random()*999)+1;return {kode:k,kodeStr:String(k).padStart(3,'0')}}
-
-window.bayarSekarang=async()=>{
-  const nama=document.getElementById('nama').value.trim();
-  const alamat=document.getElementById('alamat').value.trim();
-  const nohp=document.getElementById('nohp').value.trim();
-  if(!nama||!alamat||!nohp)return alert('Lengkapi Nama, Alamat & No. WhatsApp!');
-  const baseTotal=cart.reduce((a,b)=>a+b.price*b.qty,0);
-  const {kode,kodeStr}=genKodeUnik();
-  const finalTotal=baseTotal+kode;
-  const orderCode='DS-'+Math.random().toString(36).substring(2,8).toUpperCase();
-  const orderObj={kode:orderCode,nama,alamat,nohp,payment_status:'pending',kode_unik:kode,total_bayar:finalTotal,items:cart,status:'baru',timestamp:new Date().toISOString()};
-  try{
-    const ref=await addDoc(collection(db,'orders'),orderObj);
-    currentOrderId=ref.id;currentOrderObj=orderObj;
-  }catch(err){console.error('Gagal buat order:',err.message);return alert('Gagal membuat pesanan: '+err.message);}
-  document.getElementById('payBase').textContent=`Rp${baseTotal.toLocaleString('id-ID')}`;
-  document.getElementById('payKode').textContent=kodeStr;
-  document.getElementById('payTotal').textContent=`Rp${finalTotal.toLocaleString('id-ID')}`;
-  checkoutModal.style.display='none';paymentModal.style.display='flex';
-};
-
-window.konfirmasiSudahBayar=async()=>{
-  if(!currentOrderId)return alert('Tidak ada pesanan aktif.');
-  try{await updateDoc(doc(db,'orders',currentOrderId),{payment_status:'waiting_verification'});}
-  catch(err){console.error(err);return alert('Gagal update status: '+err.message);}
-  paymentModal.style.display='none';
-  document.getElementById('orderCodeText').textContent=currentOrderObj.kode;
-  thankyouModal.style.display='flex';
-  cart=[];cartCount.textContent=0;
-};
-
-window.copyOrderCode=()=>{
-  const text=document.getElementById('orderCodeText').textContent
-  navigator.clipboard.writeText(text).then(()=>{
-    alert('Kode pesanan disalin: '+text);
-  });
-};
-
-window.lihatStatus=()=>{
-  const code=document.getElementById('orderCodeText').textContent;
-  localStorage.setItem('lastOrderCode',code);
-  thankyouModal.style.display='none';
-  window.location.href='status.html?code='+code;
-};
-
-window.batalPayment=()=>{
-  paymentModal.style.display='none';
-};
-
-const paymentDetailsArea=document.getElementById('paymentDetailsArea');
-document.getElementById('paymentMethod2').addEventListener('change',e=>{
-  const val=e.target.value;
-  if(!val){paymentDetailsArea.innerHTML='';return;}
-  let html='';
-  if(val.includes('BCA')){
-    html=`<div class="bank-box"><span>BCA • 1234567890<br>Penerima: <b>Desta Nails Collection</b></span>
-    <button class="copy-btn" onclick="copyText('1234567890')">Copy</button></div>`;
-  }else if(val.includes('BRI')){
-    html=`<div class="bank-box"><span>BRI • 9988776655<br>Penerima: <b>Desta Nails Collection</b></span>
-    <button class="copy-btn" onclick="copyText('9988776655')">Copy</button></div>`;
-  }else if(val.includes('DANA')){
-    html=`<div class="bank-box"><span>DANA • 085774771996<br>Penerima: <b>Desta Nails Collection</b></span>
-    <button class="copy-btn" onclick="copyText('085774771996')">Copy</button></div>`;
-  }else if(val.includes('OVO')){
-    html=`<div class="bank-box"><span>OVO • 085774771996<br>Penerima: <b>Desta Nails Collection</b></span>
-    <button class="copy-btn" onclick="copyText('085774771996')">Copy</button></div>`;
-  }else if(val.includes('QRIS')){
-    html=`<div class="bank-box"><span>Scan QRIS untuk bayar ke <b>Desta Nails Collection</b></span></div>
-    <img class="qris-img" src="https://via.placeholder.com/240x240.png?text=QRIS+Desta+Nails" alt="QRIS">`;
-  }else if(val.includes('COD')){
-    html=`<div class="bank-box"><span>Pembayaran dilakukan saat barang diterima (COD)</span></div>`;
+  <script>
+  if('serviceWorker' in navigator){
+    window.addEventListener('load', ()=>{
+      navigator.serviceWorker.register('./sw.js')
+        .then(reg => console.log('Service Worker terdaftar ✅'))
+        .catch(err => console.log('SW gagal:', err));
+    });
   }
-  paymentDetailsArea.innerHTML=html;
-});
-document.getElementById('statusIcon').addEventListener('click', ()=>{
-  window.location.href = 'status.html';
-});
-window.copyText=t=>{
-  navigator.clipboard.writeText(t).then(()=>alert('Tersalin: '+t));
-};
+  </script>
 
-</script>
-
-<script>
-if('serviceWorker' in navigator){
-  window.addEventListener('load',()=>{
-    navigator.serviceWorker.register('./sw.js')
-      .then(reg=>console.log('Service Worker terdaftar ✅'))
-      .catch(err=>console.log('SW gagal:',err));
-  });
-}
-</script>
 </body>
 </html>
